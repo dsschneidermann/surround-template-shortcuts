@@ -2,16 +2,16 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>LiveTemplateShortcuts.Plugin</id>
-    <title>LiveTemplate Shortcuts</title>
-    <version>1.0.5</version>
+    <title>Live Template Shortcuts</title>
+    <version>0.9.0</version>
     <authors>Dennis Schneidermann</authors>
     <owners>DennisSchneidermann</owners>
     <description>To do</description>
     <summary>To do</summary>
     <releaseNotes>&#8226; Nothing yet</releaseNotes>
-    <projectUrl>https://github.com/JetBrains/url</projectUrl>
-    <licenseUrl>https://raw.githubusercontent.com/url/license.txt</licenseUrl>
-    <iconUrl>http://resharper-plugins.jetbrains.com/Content/Images/packageReSharper.png</iconUrl>
+    <projectUrl>https://github.com/dsschneidermann/live-template-shortcuts</projectUrl>
+    <licenseUrl>https://github.com/dsschneidermann/live-template-shortcuts/blob/master/license.txt</licenseUrl>
+    <iconUrl>http://resharper-plugins.jetbrains.com/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <copyright>Copyright 2017</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>

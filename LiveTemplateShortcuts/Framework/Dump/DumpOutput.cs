@@ -21,19 +21,17 @@ namespace LiveTemplateShortcuts.Framework.Dump
 
             _valueNoPrefix = new Lazy<string>(() => $"{_valueNoPrefixNoLinebreak.Value}\r\n");
 
-            _valueNoLinebreak = new Lazy<string>(
-                () =>
-                    {
-                        var line = $"{LinePrefix} {Description}".TrimEnd();
-                        return $"{line} ({ObjectId}:{ObjectType}) {DumpResult}";
-                    });
+            _valueNoLinebreak = new Lazy<string>(() =>
+                {
+                    var line = $"{LinePrefix} {Description}".TrimEnd();
+                    return $"{line} ({ObjectId}:{ObjectType}) {DumpResult}";
+                });
 
-            _valueNoPrefixNoLinebreak = new Lazy<string>(
-                () =>
-                    {
-                        var line = $"{Description}".TrimEnd();
-                        return $"{line} ({ObjectId}:{ObjectType}) {DumpResult}";
-                    });
+            _valueNoPrefixNoLinebreak = new Lazy<string>(() =>
+                {
+                    var line = $"{Description}".TrimEnd();
+                    return $"{line} ({ObjectId}:{ObjectType}) {DumpResult}";
+                });
         }
 
         public string ObjectType { get; }

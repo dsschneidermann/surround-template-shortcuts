@@ -3,7 +3,7 @@ using JetBrains.UI;
 
 namespace LiveTemplateShortcuts
 {
-    [SettingsKey(typeof(UserInterfaceSettings), "LiveTemplate Shortcuts settings")]
+    [SettingsKey(typeof(UserInterfaceSettings), "LiveTemplateShortcuts settings")]
     public class LiveTemplateShortcutsSettings
     {
         [SettingsEntry(true, "Enabled")]

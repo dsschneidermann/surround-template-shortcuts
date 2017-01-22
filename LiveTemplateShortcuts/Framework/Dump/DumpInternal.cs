@@ -73,8 +73,8 @@ namespace LiveTemplateShortcuts.Framework.Dump
                 var factory = new DynamicWrapperFactory();
                 //try
                 //{
-                    var generatedType = factory.CreateDynamicWrapper(typeof(T));
-                    objDynamic = Activator.CreateInstance(generatedType, obj);
+                var generatedType = factory.CreateDynamicWrapper(typeof(T));
+                objDynamic = Activator.CreateInstance(generatedType, obj);
                 //}
                 //catch (Exception ex)
                 //{

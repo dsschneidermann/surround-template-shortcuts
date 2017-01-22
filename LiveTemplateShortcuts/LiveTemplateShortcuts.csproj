@@ -20,7 +20,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <IntermediateOutputPath>obj\Release\rs92\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -334,13 +334,21 @@
     <Compile Include="Framework\Dump\DumpObservableExtensions.cs" />
     <Compile Include="Framework\Dump\DumpOutput.cs" />
     <Compile Include="Framework\Dynamic\DynamicWrapperFactory.cs" />
+    <Compile Include="GotoWordSample\GotoWordAction.cs" />
+    <Compile Include="GotoWordSample\GotoWordController.cs" />
+    <Compile Include="GotoWordSample\GotoWordControllerFactory.cs" />
+    <Compile Include="GotoWordSample\LocalOccuranceHighlight.cs" />
+    <Compile Include="Navigation\BraceMoveFinder.cs" />
+    <Compile Include="Navigation\CaretLocationFinder.cs" />
+    <Compile Include="Actions\MoveLastBraceAction.cs" />
     <Compile Include="LiveTemplateShortcuts.cs" />
-    <Compile Include="LiveTemplateShortcutsAction.cs" />
-    <Compile Include="InsertSurroundActionBase.cs" />
+    <Compile Include="Actions\InsertSurroundActions.cs" />
+    <Compile Include="Actions\InsertSurroundActionBase.cs" />
     <Compile Include="LiveTemplateShortcutsSettings.cs" />
     <Compile Include="PluginShortcutsApplier.cs" />
-    <Compile Include="PluginShortcutsApplierAction.cs" />
+    <Compile Include="Actions\PluginShortcutsApplierAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WriteOutputHelper.cs" />
     <Compile Include="ZoneMarker.cs" />
   </ItemGroup>
   <ItemGroup>

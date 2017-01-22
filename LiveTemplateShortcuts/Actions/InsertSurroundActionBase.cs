@@ -10,7 +10,7 @@ using JetBrains.TextControl;
 using JetBrains.TextControl.DataContext;
 using JetBrains.UI.ActionsRevised;
 
-namespace LiveTemplateShortcuts
+namespace LiveTemplateShortcuts.Actions
 {
     public class InsertSurroundActionBase : IExecutableAction
     {
@@ -30,15 +30,21 @@ namespace LiveTemplateShortcuts
         public void Execute(IDataContext context, DelegateExecute nextExecute)
         {
             var textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL);
-            var surroundManager = Shell.Instance.GetComponent<SurroundManager>();
             var solution = context.GetData(ProjectModelDataConstants.SOLUTION);
+            var surroundManager = Shell.Instance.GetComponent<SurroundManager>();
+
+            if (solution == null ||
+                textControl == null)
+            {
+                return;
+            }
 
             var templateItems =
-                textControl?.Selection.Ranges.Value.Select(selectionRange => selectionRange.ToDocRangeNormalized())
+                textControl.Selection.Ranges.Value.Select(selectionRange => selectionRange.ToDocRangeNormalized())
                     .Select(textRange => new TemplateAcceptanceContext(solution, textControl.Document, textRange.StartOffset, textRange))
                     .Select(tac => surroundManager.GetSurroundTemplates(tac))
                     .Select(templates => templates.FirstOrDefault(x => x.Template.Mnemonic == _mnemonic))
-                    .Where(x => x != null) ?? Enumerable.Empty<SurroundManager.SurroundTemplateItem>();
+                    .Where(x => x != null);
 
             foreach (var surroundItem in templateItems)
             {

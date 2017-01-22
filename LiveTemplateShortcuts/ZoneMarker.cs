@@ -3,7 +3,5 @@
 namespace LiveTemplateShortcuts
 {
     [ZoneMarker]
-    public class ZoneMarker
-    {
-    }
+    public class ZoneMarker { }
 }

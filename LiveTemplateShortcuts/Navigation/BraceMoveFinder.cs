@@ -19,7 +19,8 @@ namespace LiveTemplateShortcuts.Navigation
             _endOffset = endOffset;
         }
 
-        public ITreeNode LastMatchingBraceElement { get; private set; }
+        public ITreeNode BestMatchingBraceElement { get; private set; }
+        private ITreeNode LastMatchingBraceElement { get; set; }
         public ITreeNode FoundFirstCaretElement { get; private set; }
         public ITreeNode FoundLastSelectionElement { get; private set; }
 
@@ -30,12 +31,11 @@ namespace LiveTemplateShortcuts.Navigation
                 return false;
             }
 
-            var offset = element.GetNavigationRange().StartOffset.Offset;
             var result = DoesSubtreeSpanOffset(element, _startOffset);
 
             if (result)
             {
-                element.Dump($"Children of element at {offset}", false, WriteOutputHelper.Write);
+                element.Dump($"Children of element at {element.GetNavigationRange().StartOffset.Offset}", false, WriteOutputHelper.Write);
             }
             return result;
         }
@@ -53,6 +53,7 @@ namespace LiveTemplateShortcuts.Navigation
                 }
                 else
                 {
+                    // Update while looping through elements
                     FoundFirstCaretElement = element;
                 }
             }
@@ -67,35 +68,45 @@ namespace LiveTemplateShortcuts.Navigation
                 FoundFirstCaretElement.Dump($"Start caret: Element at {range.StartOffset.Offset} -> {range.EndOffset.Offset}", false, WriteOutputHelper.Write);
             }
 
-            // Count braces between processingStart and end
-            if (element.GetTokenType() == CSharpTokenType.LBRACE)
+            // Find a matching brace to move
+            if (BestMatchingBraceElement == null)
             {
-                element.Dump("CSharpTokenType.LBRACE", false, WriteOutputHelper.Write);
-                _bracesOpen++;
-            }
-            else if (element.GetTokenType() == CSharpTokenType.RBRACE)
-            {
-                _bracesOpen--;
-                if (_bracesOpen <= 0)
+                if (element.GetTokenType() == CSharpTokenType.LBRACE)
                 {
-                    element.Dump("CSharpTokenType.RBRACE (new best match)", false, WriteOutputHelper.Write);
-                    LastMatchingBraceElement = element;
+                    element.Dump("CSharpTokenType.LBRACE", false, WriteOutputHelper.Write);
+                    _bracesOpen++;
                 }
-                else
+                else if (element.GetTokenType() == CSharpTokenType.RBRACE)
                 {
-                    element.Dump("CSharpTokenType.RBRACE", false, WriteOutputHelper.Write);
+                    _bracesOpen--;
+                    LastMatchingBraceElement = element;
+                    if (_bracesOpen < 0)
+                    {
+                        BestMatchingBraceElement = element;
+                        element.Dump("CSharpTokenType.RBRACE (best match)", false, WriteOutputHelper.Write);
+                    }
+                    else
+                    {
+                        element.Dump("CSharpTokenType.RBRACE", false, WriteOutputHelper.Write);
+                    }
                 }
             }
 
             if (range.StartOffset.Offset > _endOffset)
             {
                 // This is the first element after the selection, so the previous one
-                // is our start target.
+                // is our end target.
+                if (BestMatchingBraceElement == null)
+                {
+                    // Set brace to move to be the last one
+                    BestMatchingBraceElement = LastMatchingBraceElement;
+                }
                 ProcessingIsFinished = true;
                 element.Dump($"End selection: Element at {range.StartOffset.Offset} -> {range.EndOffset.Offset}", false, WriteOutputHelper.Write);
             }
             else
             {
+                // Update while looping through elements
                 FoundLastSelectionElement = element;
             }
         }

@@ -50,9 +50,9 @@ namespace LiveTemplateShortcuts.Actions
                 {
                     var braceMoveFinder = new BraceMoveFinder(selectionRange.StartOffset.Offset, selectionRange.EndOffset.Offset);
                     file.ProcessThisAndDescendants(braceMoveFinder);
-                    if (braceMoveFinder.LastMatchingBraceElement != null)
+                    if (braceMoveFinder.BestMatchingBraceElement != null)
                     {
-                        var braceRange = braceMoveFinder.LastMatchingBraceElement.GetNavigationRange();
+                        var braceRange = braceMoveFinder.BestMatchingBraceElement.GetNavigationRange();
                         textControl.Document.DeleteText(braceRange.TextRange);
                     }
                     var caretPos = selectionRange.EndOffset.Offset;

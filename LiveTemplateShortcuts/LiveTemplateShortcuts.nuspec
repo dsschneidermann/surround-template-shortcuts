@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>LiveTemplateShortcuts.Plugin</id>
-    <title>Live Template Shortcuts</title>
+    <title>LiveTemplate Shortcuts</title>
     <version>$version$</version>
     <authors>Dennis Schneidermann</authors>
     <owners>Dennis Schneidermann</owners>
@@ -17,6 +17,6 @@
     <dependencies>
       <dependency id="Wave" version="[7.0]" />
     </dependencies>
-    <tags>resharper livetemplates keyboard shortcuts</tags>
+    <tags>resharper livetemplate keyboard shortcut surround mnemonic</tags>
   </metadata>
 </package>

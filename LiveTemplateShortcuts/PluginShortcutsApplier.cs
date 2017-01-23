@@ -38,9 +38,9 @@ namespace LiveTemplateShortcuts
 
         public static Tuple<string, string, int> GetShortcutActionForType<T>()
         {
+            var attribute = typeof(T).GetCustomAttribute<ActionAttribute>(false);
             var name = typeof(T).Name;
             var shortcutName = $"ReSharper_{name.Substring(0, name.Length - 6)}";
-            var attribute = typeof(T).GetCustomAttribute<ActionAttribute>(false);
             var vsShortcut = attribute.VsShortcuts.First().Replace("Control", "Ctrl");
             var vsScope = attribute.ShortcutScope == ShortcutScope.TextEditor ? "Text Editor" : "Global";
             var shortcutString = $"{vsScope}::{vsShortcut}";

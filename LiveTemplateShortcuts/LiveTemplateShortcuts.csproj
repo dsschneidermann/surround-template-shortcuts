@@ -340,7 +340,7 @@
     <Compile Include="GotoWordSample\LocalOccuranceHighlight.cs" />
     <Compile Include="Navigation\BraceMoveFinder.cs" />
     <Compile Include="Navigation\CaretLocationFinder.cs" />
-    <Compile Include="Actions\MoveLastBraceAction.cs" />
+    <Compile Include="Actions\MoveLastBraceToSelectionEndAction.cs" />
     <Compile Include="LiveTemplateShortcuts.cs" />
     <Compile Include="Actions\InsertSurroundActions.cs" />
     <Compile Include="Actions\InsertSurroundActionBase.cs" />

@@ -12,11 +12,11 @@ using JetBrains.UI.ActionsRevised;
 
 namespace LiveTemplateShortcuts.Actions
 {
-    public class InsertSurroundActionBase : IExecutableAction
+    public class InsertSurroundMnemonicActionBase : IExecutableAction
     {
         private readonly string _mnemonic;
 
-        public InsertSurroundActionBase(string mnemonic)
+        public InsertSurroundMnemonicActionBase(string mnemonic)
         {
             _mnemonic = mnemonic;
         }

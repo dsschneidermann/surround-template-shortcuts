@@ -8,7 +8,7 @@ using JetBrains.UI.ActionsRevised;
 
 namespace LiveTemplateShortcuts.Actions
 {
-    [Action("LiveTemplateShortcuts Set Keyboard Bindings", Id = 523600)]
+    [Action("LiveTemplate Shortcuts: Set Keyboard Bindings", Id = 523600)]
     public class PluginShortcutsApplierAction : IExecutableAction, IInsertLast<ToolsMenu>
     {
         public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
@@ -20,17 +20,17 @@ namespace LiveTemplateShortcuts.Actions
         {
             ExecuteActionOnUiThread("LiveTemplateShortcuts ApplyKeyboardBindings", () =>
                 {
-                    AssignKeyboardAction<InsertSurround1Action>();
-                    AssignKeyboardAction<InsertSurround2Action>();
-                    AssignKeyboardAction<InsertSurround3Action>();
-                    AssignKeyboardAction<InsertSurround4Action>();
-                    AssignKeyboardAction<InsertSurround5Action>();
-                    AssignKeyboardAction<InsertSurround6Action>();
-                    AssignKeyboardAction<InsertSurround7Action>();
-                    AssignKeyboardAction<InsertSurround8Action>();
-                    AssignKeyboardAction<InsertSurround9Action>();
-                    AssignKeyboardAction<InsertSurround0Action>();
-                    AssignKeyboardAction<MoveLastBraceAction>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic1Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic2Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic3Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic4Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic5Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic6Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic7Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic8Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic9Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic0Action>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_MoveLastBraceToSelectionEndAction>();
                 });
         }
 

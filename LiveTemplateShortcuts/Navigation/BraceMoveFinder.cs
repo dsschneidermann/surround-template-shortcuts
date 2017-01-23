@@ -7,15 +7,16 @@ namespace LiveTemplateShortcuts.Navigation
 {
     public class BraceMoveFinder : IRecursiveElementProcessor
     {
+        private readonly int _caretStartOffset;
         private readonly int _endOffset;
-        private readonly int _startOffset;
         private int _bracesOpen;
         private bool _firstDebugElement;
+        private ITreeNode _previousElement;
         private bool _processingStart;
 
-        public BraceMoveFinder(int startOffset, int endOffset)
+        public BraceMoveFinder(int caretStartOffset, int endOffset)
         {
-            _startOffset = startOffset;
+            _caretStartOffset = caretStartOffset;
             _endOffset = endOffset;
         }
 
@@ -31,7 +32,7 @@ namespace LiveTemplateShortcuts.Navigation
                 return false;
             }
 
-            var result = DoesSubtreeSpanOffset(element, _startOffset);
+            var result = DoesSubtreeSpanOffset(element, _caretStartOffset);
 
             if (result)
             {
@@ -45,22 +46,28 @@ namespace LiveTemplateShortcuts.Navigation
             var range = element.GetNavigationRange();
             if (!_processingStart)
             {
-                if (range.StartOffset.Offset > _startOffset)
+                if (range.StartOffset.Offset > _caretStartOffset)
                 {
                     // This is the first element after the caret, so the previous one
                     // is our start target.
-                    _processingStart = true;
-                }
-                else
-                {
-                    // Update while looping through elements
-                    FoundFirstCaretElement = element;
+                    _processingStart = true; 
+                
+                    FoundFirstCaretElement = _previousElement;
+                    if (_previousElement.GetNavigationRange().EndOffset.Offset <= _caretStartOffset)
+                    {
+                        // TODO DSS: Some boundary value is off a bit here, caret between {} will pull the first.
+                        // We are not on, but after the previous element (in whitespace or immediately after)
+                        FoundFirstCaretElement = element;
+                    }
                 }
             }
             if (!_processingStart)
             {
+                // Update while looping through elements
+                _previousElement = element;
                 return;
             }
+            _previousElement = null;
 
             if (!_firstDebugElement)
             {

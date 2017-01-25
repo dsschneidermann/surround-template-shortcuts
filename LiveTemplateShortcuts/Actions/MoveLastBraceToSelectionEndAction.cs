@@ -13,9 +13,9 @@ using LiveTemplateShortcuts.Navigation;
 
 namespace LiveTemplateShortcuts.Actions
 {
-    [Action("LiveTemplateShortcuts Move Last Brace To Selection End", Id = 523601, VsShortcuts = new[] { "Control+Alt+0" }, IdeaShortcuts = new[] { "Control+Alt+0" },
-        ShortcutScope = ShortcutScope.TextEditor, DefaultShortcutText = "LiveTemplateShortcutsMoveLastBraceToSelectionEnd")]
-    public class LiveTemplateShortcuts_MoveLastBraceToSelectionEndAction : IExecutableAction
+    [Action("LiveTemplateShortcuts Move Closing Brace To Selection End", Id = 523601, VsShortcuts = new[] { "Control+Alt+0" }, IdeaShortcuts = new[] { "Control+Alt+0" },
+        ShortcutScope = ShortcutScope.TextEditor)]
+    public class LiveTemplateShortcuts_MoveClosingBraceToSelectionEndAction : IExecutableAction
     {
         public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
         {

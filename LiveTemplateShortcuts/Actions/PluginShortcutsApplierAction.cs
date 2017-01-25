@@ -30,7 +30,7 @@ namespace LiveTemplateShortcuts.Actions
                     AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic8Action>();
                     AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic9Action>();
                     AssignKeyboardAction<LiveTemplateShortcuts_InsertSurroundMnemonic0Action>();
-                    AssignKeyboardAction<LiveTemplateShortcuts_MoveLastBraceToSelectionEndAction>();
+                    AssignKeyboardAction<LiveTemplateShortcuts_MoveClosingBraceToSelectionEndAction>();
                 });
         }
 

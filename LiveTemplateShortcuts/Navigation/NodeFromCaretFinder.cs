@@ -1,6 +1,5 @@
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
-using LiveTemplateShortcuts.Framework.Dump;
 
 namespace LiveTemplateShortcuts.Navigation
 {
@@ -14,7 +13,7 @@ namespace LiveTemplateShortcuts.Navigation
             _caretOffset = caretOffset;
         }
 
-        public ITreeNode CaretNode { get; private set; }
+        public ITreeNode NodeAtCaret { get; private set; }
 
         public bool InteriorShouldBeProcessed(ITreeNode element)
         {
@@ -29,7 +28,7 @@ namespace LiveTemplateShortcuts.Navigation
             {
                 // This is the first element with startoffset after the caret, so the previous one
                 // is our target.
-                CaretNode = _previousElement;
+                NodeAtCaret = _previousElement;
                 ProcessingIsFinished = true;
                 return;
             }

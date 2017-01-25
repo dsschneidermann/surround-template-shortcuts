@@ -5,10 +5,12 @@ using JetBrains.ProjectModel.DataContext;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Context;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.SurroundTemplates;
 using JetBrains.ReSharper.LiveTemplates.ContextActions;
+using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Resources.Shell;
-using JetBrains.TextControl;
+using JetBrains.TextControl.Coords;
 using JetBrains.TextControl.DataContext;
 using JetBrains.UI.ActionsRevised;
+using LiveTemplateShortcuts.Navigation;
 
 namespace LiveTemplateShortcuts.Actions
 {
@@ -24,7 +26,10 @@ namespace LiveTemplateShortcuts.Actions
         public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
         {
             var textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL);
-            return textControl?.Selection.HasSelection() ?? false;
+
+            // TODO: Add option here to user-control the auto-expand to word feature
+            //return textControl?.Selection.HasSelection() ?? false;
+            return true;
         }
 
         public void Execute(IDataContext context, DelegateExecute nextExecute)
@@ -32,16 +37,38 @@ namespace LiveTemplateShortcuts.Actions
             var textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL);
             var solution = context.GetData(ProjectModelDataConstants.SOLUTION);
             var surroundManager = Shell.Instance.GetComponent<SurroundManager>();
-
-            if (solution == null ||
-                textControl == null)
+            if (textControl == null ||
+                solution == null)
             {
                 return;
             }
 
+
+            var singleSelection = textControl.SingleSelectionRange();
+            if (singleSelection.IsValid() &&
+                singleSelection.IsEmpty)
+            {
+                var sourceFile = textControl.Document.GetPsiSourceFile(solution);
+                if (sourceFile == null)
+                {
+                    return;
+                }
+                var cachedPsiFile = solution.GetPsiServices().Files.GetCachedPsiFile(sourceFile, sourceFile.PrimaryPsiLanguage);
+                var file = cachedPsiFile?.PsiFile;
+                if (file == null)
+                {
+                    return;
+                }
+
+                var finder = new NodeFromCaretFinder(singleSelection.StartOffset.Offset);
+                file.ProcessThisAndDescendants(finder);
+
+                textControl.Selection.SetRanges(new[] { TextControlPosRange.FromDocRange(textControl, finder.NodeAtCaret.GetNavigationRange().TextRange) });
+            }
+
+            var selections = textControl.Selection.Ranges.GetValue().Select(x => x.ToDocRangeNormalized());
             var templateItems =
-                textControl.Selection.Ranges.Value.Select(selectionRange => selectionRange.ToDocRangeNormalized())
-                    .Select(textRange => new TemplateAcceptanceContext(solution, textControl.Document, textRange.StartOffset, textRange))
+                selections.Select(textRange => new TemplateAcceptanceContext(solution, textControl.Document, textRange.StartOffset, textRange))
                     .Select(tac => surroundManager.GetSurroundTemplates(tac))
                     .Select(templates => templates.FirstOrDefault(x => x.Template.Mnemonic == _mnemonic))
                     .Where(x => x != null);

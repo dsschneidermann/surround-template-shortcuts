@@ -40,7 +40,7 @@ namespace LiveTemplateShortcuts
         {
             var attribute = typeof(T).GetCustomAttribute<ActionAttribute>(false);
             var name = typeof(T).Name;
-            var shortcutName = $"ReSharper_{name.Substring(0, name.Length - 6)}";
+            var shortcutName = $"ReSharper_{name.Substring(0, name.Length - 6).Replace("_", string.Empty)}";
             var vsShortcut = attribute.VsShortcuts.First().Replace("Control", "Ctrl");
             var vsScope = attribute.ShortcutScope == ShortcutScope.TextEditor ? "Text Editor" : "Global";
             var shortcutString = $"{vsScope}::{vsShortcut}";

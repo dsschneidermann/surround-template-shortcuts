@@ -20,7 +20,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <IntermediateOutputPath>obj\Release\rs92\</IntermediateOutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -338,8 +338,8 @@
     <Compile Include="GotoWordSample\GotoWordController.cs" />
     <Compile Include="GotoWordSample\GotoWordControllerFactory.cs" />
     <Compile Include="GotoWordSample\LocalOccuranceHighlight.cs" />
-    <Compile Include="Navigation\BraceMoveFinder.cs" />
-    <Compile Include="Navigation\CaretLocationFinder.cs" />
+    <Compile Include="Navigation\NodesFromSelectionFinder.cs" />
+    <Compile Include="Navigation\NodeFromCaretFinder.cs" />
     <Compile Include="Actions\MoveLastBraceToSelectionEndAction.cs" />
     <Compile Include="LiveTemplateShortcuts.cs" />
     <Compile Include="Actions\InsertSurroundActions.cs" />

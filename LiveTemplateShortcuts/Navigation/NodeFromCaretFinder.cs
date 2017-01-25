@@ -4,43 +4,37 @@ using LiveTemplateShortcuts.Framework.Dump;
 
 namespace LiveTemplateShortcuts.Navigation
 {
-    public class CaretLocationFinder : IRecursiveElementProcessor
+    public class NodeFromCaretFinder : IRecursiveElementProcessor
     {
-        private readonly int _caretDocumentOffset;
+        private readonly int _caretOffset;
+        private ITreeNode _previousElement;
 
-        public CaretLocationFinder(int caretDocumentOffset)
+        public NodeFromCaretFinder(int caretOffset)
         {
-            _caretDocumentOffset = caretDocumentOffset;
+            _caretOffset = caretOffset;
         }
 
-        public ITreeNode FoundElement { get; private set; }
+        public ITreeNode CaretNode { get; private set; }
 
         public bool InteriorShouldBeProcessed(ITreeNode element)
         {
-            var offset = element.GetNavigationRange().StartOffset.Offset;
-            var result = DoesSubtreeSpanOffset(element, _caretDocumentOffset);
-
-            if (result)
-            {
-                element.Dump($"Children of element at {offset}", false, WriteOutputHelper.Write);
-            }
-            return result;
+            return DoesSubtreeSpanOffset(element, _caretOffset);
         }
 
         public void ProcessBeforeInterior(ITreeNode element)
         {
             var range = element.GetNavigationRange();
 
-            if (range.StartOffset.Offset > _caretDocumentOffset)
+            if (range.StartOffset.Offset > _caretOffset)
             {
                 // This is the first element with startoffset after the caret, so the previous one
                 // is our target.
+                CaretNode = _previousElement;
                 ProcessingIsFinished = true;
                 return;
             }
 
-            FoundElement = element;
-            element.Dump($"Element at {range.StartOffset.Offset} -> {range.EndOffset.Offset}", false, WriteOutputHelper.Write);
+            _previousElement = element;
         }
 
         public void ProcessAfterInterior(ITreeNode element) { }

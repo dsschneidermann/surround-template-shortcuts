@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel.DataContext;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.CSharp.Parsing;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.TextControl.Coords;
 using JetBrains.TextControl.DataContext;
 using JetBrains.UI.ActionsRevised;
@@ -48,17 +52,73 @@ namespace LiveTemplateShortcuts.Actions
                 var selectionRange = textControl.SingleSelectionRange();
                 if (!selectionRange.IsEmpty)
                 {
-                    var braceMoveFinder = new BraceMoveFinder(selectionRange.StartOffset.Offset, selectionRange.EndOffset.Offset);
-                    file.ProcessThisAndDescendants(braceMoveFinder);
-                    if (braceMoveFinder.BestMatchingBraceElement != null)
+                    var finder = new NodesFromSelectionFinder(selectionRange.StartOffset.Offset, selectionRange.EndOffset.Offset);
+                    file.ProcessThisAndDescendants(finder);
+
+                    var match = FindBraceMatch(finder.SelectionNodes);
+
+                    if (match.IsMatched())
                     {
-                        var braceRange = braceMoveFinder.BestMatchingBraceElement.GetNavigationRange();
-                        textControl.Document.DeleteText(braceRange.TextRange);
+                        textControl.Document.DeleteText(match.Node.GetNavigationRange().TextRange);
                     }
                     var caretPos = selectionRange.EndOffset.Offset;
                     textControl.Selection.SetRanges(new[] { TextControlPosRange.FromDocRange(textControl, caretPos, caretPos) });
                 }
                 textControl.EmulateTyping('}');
+            }
+        }
+
+        private BraceMatch FindBraceMatch(IEnumerable<ITreeNode> nodes)
+        {
+            var match = BraceMatch.Init();
+            foreach (var node in nodes.Where(x => x.NodeType == CSharpTokenType.LBRACE || x.NodeType == CSharpTokenType.RBRACE))
+            {
+                if (node.NodeType == CSharpTokenType.LBRACE)
+                {
+                    match = BraceMatch.NoMatch(match.OpenBraces + 1);
+                }
+                else if (match.OpenBraces > 0)
+                {
+                    match = BraceMatch.NoMatch(match.OpenBraces - 1);
+                }
+                else
+                {
+                    // Return first closing brace that is not in balance
+                    return BraceMatch.Match(node);
+                }
+            }
+            return match;
+        }
+
+        private class BraceMatch
+        {
+            private BraceMatch(ITreeNode node, int openBraces)
+            {
+                OpenBraces = openBraces;
+                Node = node;
+            }
+
+            public ITreeNode Node { get; }
+            public int OpenBraces { get; }
+
+            public bool IsMatched()
+            {
+                return Node != null;
+            }
+
+            public static BraceMatch Init()
+            {
+                return new BraceMatch(null, 0);
+            }
+
+            public static BraceMatch NoMatch(int openBraceCounter)
+            {
+                return new BraceMatch(null, openBraceCounter);
+            }
+
+            public static BraceMatch Match(ITreeNode braceNode)
+            {
+                return new BraceMatch(braceNode, 0);
             }
         }
     }

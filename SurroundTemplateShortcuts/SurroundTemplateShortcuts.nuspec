@@ -6,7 +6,11 @@
     <version>0.9.0</version>
     <authors>Dennis Schneidermann</authors>
     <owners>Dennis Schneidermann</owners>
-    <description>See project url</description>
+    <description>
+      This plugin for ReSharper creates keyboard shortcuts to activate Surround Templates.
+
+      Surround Templates in ReSharper can be assigned a "mnemonic" number, which is normally only used to show in the surround-with dropdown (Ctrl+E, U). This plugin adds additional keyboard shortcuts that activate Surround Templates on the current text selection.
+    </description>
     <summary>Shortcuts to activate Surround Templates.</summary>
     <releaseNotes>
       &#8226; Initial release

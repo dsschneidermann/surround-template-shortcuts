@@ -17,13 +17,27 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <IntermediateOutputPath>obj\Release\rs92\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugSymbols>false</DebugSymbols>
+    <LangVersion>7</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugSymbols>true</DebugSymbols>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="antlr.runtime, Version=2.7.7.1, Culture=neutral, PublicKeyToken=0f493c87b190d7e9, processorArchitecture=MSIL">
@@ -386,12 +400,9 @@
   <Import Project="..\packages\JetBrains.Platform.Core.Ide.107.0.20161222.212632\build\JetBrains.Platform.Core.Ide.Targets" Condition="Exists('..\packages\JetBrains.Platform.Core.Ide.107.0.20161222.212632\build\JetBrains.Platform.Core.Ide.Targets')" />
   <Import Project="..\packages\JetBrains.Platform.VisualStudio.107.0.20161214.153643\build\JetBrains.Platform.VisualStudio.Targets" Condition="Exists('..\packages\JetBrains.Platform.VisualStudio.107.0.20161214.153643\build\JetBrains.Platform.VisualStudio.Targets')" />
   <Import Project="..\packages\JetBrains.Psi.Features.VisualStudio.107.0.20161215.131222\build\JetBrains.Psi.Features.VisualStudio.Targets" Condition="Exists('..\packages\JetBrains.Psi.Features.VisualStudio.107.0.20161215.131222\build\JetBrains.Psi.Features.VisualStudio.Targets')" />
-  <Target Name="AfterBuild">
+  <Target Name="AfterBuild" Condition="'$(BuildingInsideVisualStudio' != ''">
+    <Exec Command='"$(SolutionDir).nuget\\NuGet.exe" pack "$(ProjectPath)" -OutputDirectory "$(SolutionDir)GeneratedPackages" -basepath "$(SolutionDir)$(ProjectName)" -Verbosity detailed -Prop Configuration=Release -Prop Platform=AnyCPU'></Exec>
   </Target>
-  <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)GeneratedPackages" 
-"$(SolutionDir).nuget\NuGet.exe" pack "$(ProjectPath)" -OutputDirectory "$(SolutionDir)GeneratedPackages" -basepath "$(SolutionDir)$(ProjectName)" -Verbosity detailed -Prop Configuration=Release -Prop Platform=AnyCPU</PostBuildEvent>
-  </PropertyGroup>
   <Import Project="..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Framework.107.0.20161222.212632\build\JetBrains.Platform.Interop.dotMemoryUnit.Framework.Targets" Condition="Exists('..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Framework.107.0.20161222.212632\build\JetBrains.Platform.Interop.dotMemoryUnit.Framework.Targets')" />
   <Import Project="..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Interop.107.0.20161222.212632\build\JetBrains.Platform.Interop.dotMemoryUnit.Interop.Targets" Condition="Exists('..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Interop.107.0.20161222.212632\build\JetBrains.Platform.Interop.dotMemoryUnit.Interop.Targets')" />
   <Import Project="..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Interop.Ide.107.0.20161222.212632\build\JetBrains.Platform.Interop.dotMemoryUnit.Interop.Ide.Targets" Condition="Exists('..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Interop.Ide.107.0.20161222.212632\build\JetBrains.Platform.Interop.dotMemoryUnit.Interop.Ide.Targets')" />

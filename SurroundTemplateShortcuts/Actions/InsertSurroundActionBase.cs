@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
@@ -10,6 +11,8 @@ using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl.Coords;
 using JetBrains.TextControl.DataContext;
 using JetBrains.UI.ActionsRevised;
+using SurroundTemplateShortcuts.Framework.Dump;
+using SurroundTemplateShortcuts.Framework.Stack;
 using SurroundTemplateShortcuts.Navigation;
 
 namespace SurroundTemplateShortcuts.Actions
@@ -43,7 +46,6 @@ namespace SurroundTemplateShortcuts.Actions
                 return;
             }
 
-
             var singleSelection = textControl.SingleSelectionRange();
             if (singleSelection.IsValid() &&
                 singleSelection.IsEmpty)
@@ -53,7 +55,8 @@ namespace SurroundTemplateShortcuts.Actions
                 {
                     return;
                 }
-                var cachedPsiFile = solution.GetPsiServices().Files.GetCachedPsiFile(sourceFile, sourceFile.PrimaryPsiLanguage);
+                var cachedPsiFile = solution.GetPsiServices().Files
+                    .GetCachedPsiFile(sourceFile, sourceFile.PrimaryPsiLanguage);
                 var file = cachedPsiFile?.PsiFile;
                 if (file == null)
                 {
@@ -63,12 +66,46 @@ namespace SurroundTemplateShortcuts.Actions
                 var finder = new NodeFromCaretFinder(singleSelection.StartOffset.Offset);
                 file.ProcessThisAndDescendants(finder);
 
-                textControl.Selection.SetRanges(new[] { TextControlPosRange.FromDocRange(textControl, finder.NodeAtCaret.GetNavigationRange().TextRange) });
+                var selected = NodeFromCaretFinder.GetParentLanguageElementFromNode(finder.NodeAtCaret);
+
+                textControl.Selection.SetRanges(
+                    new[]
+                    {
+                        TextControlPosRange.FromDocRange(
+                            textControl,
+                            selected.GetNavigationRange().TextRange)
+                    });
+
+                try
+                {
+                    finder.NodeAtCaret.Dump(
+                        $"Node at caret {singleSelection.StartOffset.Offset}",
+                        WriteOutputHelper.Write);
+
+                    selected.Dump("Selected node", false, WriteOutputHelper.Write);
+
+                    var ranges = finder.NodeAtCaret.GetRecursive(x => x.Parent);
+                    foreach (var range in ranges)
+                    {
+                        var navRange = range.GetNavigationRange();
+                        range.Dump(
+                            $"Range of node: {navRange.StartOffset.Offset} to {navRange.EndOffset.Offset}",
+                            false,
+                            WriteOutputHelper.Write);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    WriteOutputHelper.Write(ex.ToString());
+                }
             }
 
             var selections = textControl.Selection.Ranges.GetValue().Select(x => x.ToDocRangeNormalized());
             var templateItems =
-                selections.Select(textRange => new TemplateAcceptanceContext(solution, textControl.Document, textRange.StartOffset, textRange))
+                selections.Select(textRange =>
+                        new TemplateAcceptanceContext(
+                            solution, textControl.Document,
+                            textRange.StartOffset, textRange))
                     .Select(tac => surroundManager.GetSurroundTemplates(tac))
                     .Select(templates => templates.FirstOrDefault(x => x.Template.Mnemonic == _mnemonic))
                     .Where(x => x != null);

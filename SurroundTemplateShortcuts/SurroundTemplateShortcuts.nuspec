@@ -3,7 +3,7 @@
   <metadata>
     <id>SurroundTemplateShortcuts.Plugin</id>
     <title>Surround Template Shortcuts</title>
-    <version>0.9.0</version>
+    <version>1.0.0</version>
     <authors>Dennis Schneidermann</authors>
     <owners>Dennis Schneidermann</owners>
     <description>
@@ -11,9 +11,11 @@
 
       Surround Templates in ReSharper can be assigned a "mnemonic" number, which is normally only used to show in the surround-with dropdown (Ctrl+E, U). This plugin adds additional keyboard shortcuts that activate Surround Templates on the current text selection.
     </description>
-    <summary>Shortcuts to activate Surround Templates.</summary>
+    <summary>Keyboard shortcuts to activate Surround Templates.</summary>
     <releaseNotes>
-      &#8226; Initial release
+&#8226; [Added] Support for ReSharper 2017.1
+&#8226; [Added] Caret on certain language elements will surround to it (eg. on method use, object initialization)
+&#8226; [Fixed] Caret placed at end of word now selects correctly for surrounding
     </releaseNotes>
     <projectUrl>https://github.com/dsschneidermann/surround-template-shortcuts</projectUrl>
     <licenseUrl>https://raw.githubusercontent.com/dsschneidermann/surround-template-shortcuts/master/license.txt</licenseUrl>
@@ -21,7 +23,7 @@
     <copyright>Copyright 2017</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="Wave" version="[7.0]" />
+      <dependency id="Wave" version="[8.0]" />
     </dependencies>
     <tags>livetemplates surround mnemonic keyboard shortcuts</tags>
   </metadata>

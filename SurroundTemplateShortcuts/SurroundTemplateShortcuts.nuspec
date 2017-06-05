@@ -3,7 +3,7 @@
   <metadata>
     <id>SurroundTemplateShortcuts.Plugin</id>
     <title>Surround Template Shortcuts</title>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>Dennis Schneidermann</authors>
     <owners>Dennis Schneidermann</owners>
     <description>
@@ -13,9 +13,10 @@
     </description>
     <summary>Keyboard shortcuts to activate Surround Templates.</summary>
     <releaseNotes>
-&#8226; [Added] Support for ReSharper 2017.1
-&#8226; [Added] Caret on certain language elements will surround to it (eg. on method use, object initialization)
-&#8226; [Fixed] Caret placed at end of word now selects correctly for surrounding
+&#8226; [Fixed] v1.0.1 - Removed debugging code that was possibly causing a Visual Studio error
+&#8226; [Added] v1.0 - Support for ReSharper 2017.1
+&#8226; [Added] v1.0 - Caret on certain language elements will surround to it (eg. on method use, object initialization)
+&#8226; [Fixed] v1.0 - Caret placed at end of word now selects correctly for surrounding
     </releaseNotes>
     <projectUrl>https://github.com/dsschneidermann/surround-template-shortcuts</projectUrl>
     <licenseUrl>https://raw.githubusercontent.com/dsschneidermann/surround-template-shortcuts/master/license.txt</licenseUrl>

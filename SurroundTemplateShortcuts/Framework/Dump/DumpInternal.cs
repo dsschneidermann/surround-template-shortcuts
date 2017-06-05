@@ -36,7 +36,7 @@ namespace SurroundTemplateShortcuts.Framework.Dump
                 { typeof(void), "void" }
             };
         
-        //[Conditional("DEBUG")]
+        [Conditional("DEBUG")]
         [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
         internal static void Dump<T>(T obj, string description, bool? makeDump, Action<DumpOutput> stringOut, [CallerFilePath] string filepath = null,
                                      [CallerLineNumber] int linenumber = -1, [CallerMemberName] string caller = null)

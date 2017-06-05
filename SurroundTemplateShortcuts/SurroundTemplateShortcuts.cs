@@ -3,7 +3,6 @@ using JetBrains.Application;
 using JetBrains.Application.Parts;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
-using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.Threading;
 
 namespace SurroundTemplateShortcuts
@@ -13,11 +12,12 @@ namespace SurroundTemplateShortcuts
     {
         public SurroundTemplateShortcuts(Lifetime lifetime, ISettingsStore settingsStore, IThreading threading)
         {
+#if DEBUG
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+#endif
         }
-
-        public static SurroundTemplateShortcuts Instance => Shell.Instance.GetComponent<SurroundTemplateShortcuts>();
-
+        
+#if DEBUG
         System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string dllName = args.Name.Contains(",")
@@ -38,5 +38,7 @@ namespace SurroundTemplateShortcuts
 
             return System.Reflection.Assembly.Load(bytes);
         }
+#endif
+
     }
 }

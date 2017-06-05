@@ -463,9 +463,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\LINQPad.exe" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\LINQPad.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -497,7 +494,7 @@
   <Import Project="..\packages\Antlr2.Tools.2.7.6.4\build\Antlr2.Tools.targets" Condition="Exists('..\packages\Antlr2.Tools.2.7.6.4\build\Antlr2.Tools.targets')" />
   <Import Project="..\packages\JetBrains.Build.Platform.Tasks.ThemedIconsPacker.2.0.20151217.1\build\JetBrains.Build.Platform.Tasks.ThemedIconsPacker.Targets" Condition="Exists('..\packages\JetBrains.Build.Platform.Tasks.ThemedIconsPacker.2.0.20151217.1\build\JetBrains.Build.Platform.Tasks.ThemedIconsPacker.Targets')" />
   <Target Name="AfterBuild" Condition="'$(BuildingInsideVisualStudio)' != ''">
-    <MakeDir Directories="$(SolutionDir)GeneratedPackages"/>
+    <MakeDir Directories="$(SolutionDir)GeneratedPackages" />
     <Exec Command="&quot;$(SolutionDir).nuget\\NuGet.exe&quot; pack &quot;$(ProjectPath)&quot; -OutputDirectory &quot;$(SolutionDir)GeneratedPackages&quot; -basepath &quot;$(SolutionDir)$(ProjectName)&quot; -Verbosity detailed -Prop Configuration=Debug -Prop Platform=AnyCPU" />
   </Target>
   <Import Project="..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Interop.108.0.20170402.75356\build\JetBrains.Platform.Interop.dotMemoryUnit.Interop.Targets" Condition="Exists('..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Interop.108.0.20170402.75356\build\JetBrains.Platform.Interop.dotMemoryUnit.Interop.Targets')" />
